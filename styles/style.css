@@ -157,6 +157,30 @@ body {
     border-radius: 12px;
 }
 
+.contact-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.contact-card h3 {
+    margin: 0;
+}
+
+.whatsapp-btn {
+    display: block;
+    margin-top: 0;
+    white-space: nowrap;
+    padding: 12px 16px;
+    background: #25d366;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
 .section .section-gap {
     margin-top: 40px;
 }
