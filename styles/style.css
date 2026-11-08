@@ -1,0 +1,212 @@
+
+* {
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: #f5f6fa;
+    color: #192332;
+    font-family: Arial, sans-serif;
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 18px;
+    background: #192332;
+}
+
+.navbar a {
+    position: relative;
+    color: #aabbd5;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    padding-bottom: 5px;
+    transition: color 0.2s;
+}
+
+.navbar a.active {
+    color: white;
+}
+
+.navbar a.active::after {
+    content: "";
+    position: absolute;
+    bottom: -18px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: white;
+    border-radius: 3px;
+}
+
+.hero {
+    position: relative;
+    min-height: 450px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    color: white;
+    background: #111;
+}
+
+.hero video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero::after,
+.gallery-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.hero-content,
+.gallery-hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 40px 20px;
+    color: white;
+}
+
+.hero h1,
+.gallery-hero h2 {
+    font-size: 2.8rem;
+    margin: 0;
+}
+
+.container {
+    width: 100%;
+    max-width: 1100px;
+    margin: auto;
+    padding: 20px;
+}
+
+.section {
+    padding: 40px 20px;
+    scroll-margin-top: 70px;
+    min-height: 250px;
+}
+
+.section h2 {
+    font-size: 2rem;
+    margin-top: 0;
+}
+
+.info-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.info-card {
+    background: white;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+}
+
+.info-card h3 {
+    margin: 0 0 15px;
+    font-size: 1.1rem;
+}
+
+.info-card .price {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin: 0;
+    color: #192f4b;
+}
+
+.info-card span {
+    display: block;
+    margin-top: 6px;
+    color: #687386;
+}
+
+.date-card .price {
+    font-size: 1.4rem;
+}
+
+.address-card .address {
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+.address-card .map-frame {
+    display: block;
+    width: 100%;
+    height: 240px;
+    margin-top: 16px;
+    border: 0;
+    border-radius: 12px;
+}
+
+.section .section-gap {
+    margin-top: 40px;
+}
+
+.gallery-hero {
+    position: relative;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-image: url("https://raw.githubusercontent.com/eupyetro0224234/sitioebdamador1/refs/heads/main/images/0.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    scroll-margin-top: 70px;
+}
+
+.gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.gallery img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+}
+
+@media (max-width: 600px) {
+    .hero {
+        min-height: 400px;
+    }
+
+    .hero h1,
+    .gallery-hero h2 {
+        font-size: 2.2rem;
+    }
+
+    .gallery-hero {
+        min-height: 250px;
+    }
+
+    .navbar {
+        gap: 30px;
+    }
+
+    .info-cards {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#192332">
+    <title>Informações</title>
+
+    <link rel="stylesheet" href="styles/style.css?v=3">
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="#informacoes" class="active" data-section="informacoes">Informações</a>
+        <a href="#galeria" data-section="galeria">Galeria</a>
+    </nav>
+
+    <header class="hero">
+        <video autoplay loop muted playsinline preload="auto">
+            <source src="https://raw.githubusercontent.com/eupyetro0224234/sitioebdamador1/refs/heads/main/images/10.mp4" type="video/mp4">
+        </video>
+
+        <div class="hero-content">
+            <h1>Informações</h1>
+        </div>
+    </header>
+
+    <main>
+
+        <section class="section container" id="informacoes">
+
+            <h2>Data</h2>
+
+            <div class="info-cards">
+
+                <article class="info-card date-card">
+                    <p class="price">Dias 11 e 12 de dezembro</p>
+                </article>
+
+            </div>
+
+            <h2 class="section-gap">Preços</h2>
+
+            <div class="info-cards">
+
+                <article class="info-card">
+                    <h3>Adultos</h3>
+                    <p class="price">R$ 180,00</p>
+                </article>
+
+                <article class="info-card">
+                    <h3>Crianças de 8 a 15 anos</h3>
+                    <p class="price">R$ 150,00</p>
+                </article>
+
+                <article class="info-card">
+                    <h3>Crianças de 0 a 7 anos</h3>
+                    <p class="price">Gratuito</p>
+                </article>
+
+            </div>
+
+            <h2 class="section-gap">Endereço</h2>
+
+            <div class="info-cards">
+
+                <article class="info-card address-card">
+                    <h3>Rancho Colopietra</h3>
+                    <p class="address">Rua Paulo Sabatine, 1150 – Bairro Goianã<br>São Roque – SP</p>
+                    <iframe class="map-frame" title="Mapa do Rancho Colopietra" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Rua+Paulo+Sabatine,+1150,+Goian%C3%A3,+S%C3%A3o+Roque,+SP&output=embed"></iframe>
+                </article>
+
+            </div>
+
+        </section>
+
+        <section id="galeria">
+
+            <header class="gallery-hero">
+                <div class="gallery-hero-content">
+                    <h2>Galeria</h2>
+                </div>
+            </header>
+
+            <div class="container">
+
+                <div class="gallery">
+
+                    <img src="https://raw.githubusercontent.com/eupyetro0224234/sitioebdamador1/refs/heads/main/images/0.jpg" alt="Foto 1">
+
+                    <img src="https://raw.githubusercontent.com/eupyetro0224234/sitioebdamador1/refs/heads/main/images/2.jpg" alt="Foto 2">
+
+                    <img src="https://raw.githubusercontent.com/eupyetro0224234/sitioebdamador1/refs/heads/main/images/3.jpg" alt="Foto 3">
+
+                    <img src="https://raw.githubusercontent.com/eupyetro0224234/sitioebdamador1/refs/heads/main/images/4.jpg" alt="Foto 4">
+
+                    <img src="https://raw.githubusercontent.com/eupyetro0224234/sitioebdamador1/refs/heads/main/images/5.jpg" alt="Foto 5">
+
+                    <img src="https://raw.githubusercontent.com/eupyetro0224234/sitioebdamador1/refs/heads/main/images/6.jpg" alt="Foto 6">
+
+                    <img src="https://raw.githubusercontent.com/eupyetro0224234/sitioebdamador1/refs/heads/main/images/7.jpg" alt="Foto 7">
+
+                    <img src="https://raw.githubusercontent.com/eupyetro0224234/sitioebdamador1/refs/heads/main/images/8.jpg" alt="Foto 8">
+
+                    <img src="https://raw.githubusercontent.com/eupyetro0224234/sitioebdamador1/refs/heads/main/images/9.jpg" alt="Foto 9">
+
+                    <img src="https://raw.githubusercontent.com/eupyetro0224234/sitioebdamador1/refs/heads/main/images/1.jpg" alt="Foto 10">
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script>
+const links = document.querySelectorAll(".navbar a");
+const navbar = document.querySelector(".navbar");
+const galeria = document.getElementById("galeria");
+
+function atualizarNavegacao() {
+    const alturaNavbar = navbar ? navbar.offsetHeight : 0;
+    const linhaReferencia = alturaNavbar + window.innerHeight * 0.4;
+    const topoGaleria = galeria.getBoundingClientRect().top;
+
+    const naBase =
+        window.innerHeight + (window.scrollY || document.documentElement.scrollTop) >=
+        document.documentElement.scrollHeight - 2;
+
+    const secaoAtual =
+        topoGaleria <= linhaReferencia || naBase ? "galeria" : "informacoes";
+
+    links.forEach(link => {
+        link.classList.toggle("active", link.dataset.section === secaoAtual);
+    });
+}
+
+// "true" captura o scroll de qualquer elemento (window, html ou body)
+document.addEventListener("scroll", atualizarNavegacao, { passive: true, capture: true });
+window.addEventListener("resize", atualizarNavegacao);
+window.addEventListener("load", atualizarNavegacao);
+
+// Clicar no menu continua funcionando; ao terminar de rolar, o scroll acerta o item
+links.forEach(link => {
+    link.addEventListener("click", () => {
+        links.forEach(item => item.classList.remove("active"));
+        link.classList.add("active");
+    });
+});
+
+atualizarNavegacao();
+    </script>
+
+</body>
+</html>
