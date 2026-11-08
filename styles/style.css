@@ -337,7 +337,6 @@ img:focus:not(:focus-visible) { outline: none; }
 .pix-key .pix-value { -webkit-user-select: text; user-select: text; }
 .pix-fail { margin: 10px 0 0; font-size: 0.85rem; color: #b3261e; }
 
-/* ===== Tema escuro: segue o tema do celular/computador ===== */
 :root {
     color-scheme: light dark;
 }
@@ -371,8 +370,7 @@ img:focus:not(:focus-visible) { outline: none; }
         border-top-color: rgba(255, 255, 255, 0.14);
     }
 
-    /* o QR Code precisa de fundo branco para o banco conseguir ler */
-    .pay-qr {
+        .pay-qr {
         background: #fff;
         padding: 10px;
     }

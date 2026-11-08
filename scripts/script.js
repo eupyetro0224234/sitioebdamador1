@@ -1,14 +1,10 @@
-// ===== MÚSICA DE FUNDO =====
-// Cole abaixo o link do MP3 entre as aspas, por exemplo:
-// const MUSICA_URL = "https://raw.githubusercontent.com/eupyetro0224234/sitioebdamador1/refs/heads/main/images/musica.mp3";
-// Enquanto estiver vazio ("") não toca nada. Não há botão de som: a música toca sozinha no primeiro toque.
 const MUSICA_URL = "https://raw.githubusercontent.com/eupyetro0224234/sitioebdamador1/refs/heads/main/images/11.mp3";
 
 if (MUSICA_URL) {
     const audio = new Audio(MUSICA_URL);
     audio.loop = true;
     audio.volume = 0.4;
-    audio.preload = "auto";
+    audio.preload = "none";
 
     const eventosPrimeiroToque = ["pointerup", "click", "touchend", "keydown"];
 
@@ -19,7 +15,6 @@ if (MUSICA_URL) {
         }).catch(() => {});
     }
 
-    // começa a tocar no primeiro toque/clique em qualquer lugar do site
     eventosPrimeiroToque.forEach(nome =>
         document.addEventListener(nome, tentarTocar, true));
 }
@@ -50,12 +45,10 @@ function atualizarNavegacao() {
     });
 }
 
-// "true" captura o scroll de qualquer elemento (window, html ou body)
 document.addEventListener("scroll", atualizarNavegacao, { passive: true, capture: true });
 window.addEventListener("resize", atualizarNavegacao);
 window.addEventListener("load", atualizarNavegacao);
 
-// Clicar no menu continua funcionando; ao terminar de rolar, o scroll acerta o item
 links.forEach(link => {
     link.addEventListener("click", () => {
         links.forEach(item => item.classList.remove("active"));
@@ -65,7 +58,6 @@ links.forEach(link => {
 
 atualizarNavegacao();
 
-// ===== Zoom das fotos =====
 const lightbox = document.getElementById("lightbox");
 const lightboxImg = document.getElementById("lightbox-img");
 const lightboxClose = document.getElementById("lightbox-close");
@@ -96,7 +88,6 @@ function centro() {
     return { x: lightbox.clientWidth / 2, y: lightbox.clientHeight / 2 };
 }
 
-// aplica um novo zoom mantendo o ponto (px, py) da tela no mesmo lugar da foto
 function zoomEm(novaEscala, px, py, destinoX, destinoY) {
     const c = centro();
     novaEscala = Math.min(5, Math.max(1, novaEscala));
@@ -165,7 +156,7 @@ lightbox.addEventListener("pointermove", e => {
     if (base.tipo === "pinca" && pts.length >= 2) {
         const m = meio(pts[0], pts[1]);
         const nova = base.escala * (distancia(pts[0], pts[1]) / base.dist);
-        // volta ao estado do início do gesto para calcular o ponto focal
+
         escala = base.escala; posX = base.px; posY = base.py;
         zoomEm(nova, base.mx, base.my, m.x, m.y);
         moveu = true;
@@ -194,7 +185,7 @@ function soltou(e) {
         if (e.target === lightboxImg) {
             const agora = Date.now();
             if (agora - ultimoToque < 300) {
-                // toque duplo: aproxima ou volta ao normal
+
                 if (escala > 1) { escala = 1; posX = 0; posY = 0; }
                 else zoomEm(2.5, e.clientX, e.clientY, e.clientX, e.clientY);
                 aplicar(true);
@@ -211,21 +202,18 @@ function soltou(e) {
 lightbox.addEventListener("pointerup", soltou);
 lightbox.addEventListener("pointercancel", soltou);
 
-// computador: roda do mouse dá zoom
 lightbox.addEventListener("wheel", e => {
     e.preventDefault();
     zoomEm(escala * Math.exp(-e.deltaY * 0.002), e.clientX, e.clientY, e.clientX, e.clientY);
     aplicar(false);
 }, { passive: false });
 
-// iOS: impede o zoom da página inteira enquanto a foto está aberta
 ["gesturestart", "gesturechange"].forEach(nome => {
     document.addEventListener(nome, e => {
         if (!lightbox.hidden) e.preventDefault();
     });
 });
 
-// ===== Copiar chave Pix =====
 const botaoPix = document.getElementById("pix-key");
 const chavePix = botaoPix.dataset.key;
 const falhaPix = document.getElementById("pix-fail");
