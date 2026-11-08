@@ -82,6 +82,35 @@ const navbar = document.querySelector(".navbar");
 const secoes = ["informacoes", "pagamento", "galeria"]
     .map(id => document.getElementById(id));
 
+const indicador = document.createElement("span");
+indicador.className = "nav-indicator";
+navbar.appendChild(indicador);
+
+const listaLinks = Array.from(links);
+
+function posicionarIndicador(linhaReferencia, naBase) {
+    const n = secoes.length;
+    const faixa = window.innerHeight * 0.25;
+
+    let indice = 0;
+    for (let i = 1; i < n; i++) {
+        const topo = secoes[i].getBoundingClientRect().top;
+        const parte = (linhaReferencia - topo + faixa / 2) / faixa;
+        indice += Math.min(1, Math.max(0, parte));
+    }
+    if (naBase) indice = n - 1;
+
+    const i = Math.min(Math.floor(indice), n - 2);
+    const t = indice - i;
+    const de = listaLinks[i];
+    const para = listaLinks[i + 1];
+    const esquerda = de.offsetLeft + (para.offsetLeft - de.offsetLeft) * t;
+    const largura = de.offsetWidth + (para.offsetWidth - de.offsetWidth) * t;
+
+    indicador.style.width = largura + "px";
+    indicador.style.transform = "translateX(" + esquerda + "px)";
+}
+
 function atualizarNavegacao() {
     const alturaNavbar = navbar ? navbar.offsetHeight : 0;
     const linhaReferencia = alturaNavbar + window.innerHeight * 0.4;
@@ -101,11 +130,14 @@ function atualizarNavegacao() {
     links.forEach(link => {
         link.classList.toggle("active", link.dataset.section === secaoAtual);
     });
+
+    posicionarIndicador(linhaReferencia, naBase);
 }
 
 document.addEventListener("scroll", atualizarNavegacao, { passive: true, capture: true });
 window.addEventListener("resize", atualizarNavegacao);
 window.addEventListener("load", atualizarNavegacao);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(atualizarNavegacao);
 
 links.forEach(link => {
     link.addEventListener("click", () => {
