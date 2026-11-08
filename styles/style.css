@@ -336,25 +336,3 @@ img:focus:not(:focus-visible) { outline: none; }
 
 .pix-key .pix-value { -webkit-user-select: text; user-select: text; }
 .pix-fail { margin: 10px 0 0; font-size: 0.85rem; color: #b3261e; }
-
-.pix-toast {
-    position: fixed;
-    top: 0;
-    left: 50%;
-    z-index: 200;
-    transform: translate(-50%, -120%);
-    opacity: 0;
-    padding: 13px 22px;
-    border-radius: 0 0 12px 12px;
-    background: #25d366;
-    color: #fff;
-    font-size: 15px;
-    font-weight: 600;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22);
-    pointer-events: none;
-    transition: transform 0.35s ease, opacity 0.3s ease;
-    white-space: nowrap;
-}
-
-.pix-toast.visivel { transform: translate(-50%, 0); opacity: 1; }
-.pix-toast.erro { background: #b3261e; }
