@@ -1,7 +1,7 @@
 // ===== MÚSICA DE FUNDO =====
 // Cole abaixo o link do MP3 entre as aspas, por exemplo:
 // const MUSICA_URL = "https://raw.githubusercontent.com/eupyetro0224234/sitioebdamador1/refs/heads/main/images/musica.mp3";
-// Enquanto estiver vazio ("") não toca nada e o botão de som não aparece.
+// Enquanto estiver vazio ("") não toca nada. Não há botão de som: a música toca sozinha no primeiro toque.
 const MUSICA_URL = "https://raw.githubusercontent.com/eupyetro0224234/sitioebdamador1/refs/heads/main/images/11.mp3";
 
 if (MUSICA_URL) {
@@ -10,52 +10,18 @@ if (MUSICA_URL) {
     audio.volume = 0.4;
     audio.preload = "auto";
 
-    const iconeLigado =
-        '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
-    const iconeMudo =
-        '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m16 9 5 6"/><path d="m21 9-5 6"/></svg>';
-
-    const botaoSom = document.createElement("button");
-    botaoSom.type = "button";
-    botaoSom.className = "music-btn";
-    botaoSom.setAttribute("aria-label", "Ligar ou desligar a música");
-    botaoSom.innerHTML = iconeMudo;
-    document.body.appendChild(botaoSom);
-
-    let pausadoPeloUsuario = false;
     const eventosPrimeiroToque = ["pointerup", "click", "touchend", "keydown"];
 
-    function atualizarIcone() {
-        botaoSom.innerHTML = audio.paused ? iconeMudo : iconeLigado;
-    }
-
     function tentarTocar() {
-        if (pausadoPeloUsuario) return;
         audio.play().then(() => {
             eventosPrimeiroToque.forEach(nome =>
                 document.removeEventListener(nome, tentarTocar, true));
-            atualizarIcone();
         }).catch(() => {});
     }
 
     // começa a tocar no primeiro toque/clique em qualquer lugar do site
     eventosPrimeiroToque.forEach(nome =>
         document.addEventListener(nome, tentarTocar, true));
-
-    botaoSom.addEventListener("click", e => {
-        e.stopPropagation();
-        if (audio.paused) {
-            pausadoPeloUsuario = false;
-            audio.play().then(atualizarIcone).catch(() => {});
-        } else {
-            pausadoPeloUsuario = true;
-            audio.pause();
-            atualizarIcone();
-        }
-    });
-
-    audio.addEventListener("play", atualizarIcone);
-    audio.addEventListener("pause", atualizarIcone);
 }
 
 const links = document.querySelectorAll(".navbar a");
