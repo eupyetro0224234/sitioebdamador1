@@ -56,18 +56,20 @@ body {
     will-change: transform, width;
 }
 
-.hero {
+.hero, .gallery-hero {
     position: relative;
-    min-height: 450px;
+    height: 300px;
+    min-height: 0;
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     color: white;
-    background: #111;
+    background-color: #111;
 }
 
-.hero video {
+.hero .hero-bg {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -180,9 +182,12 @@ body.lightbox-open { overflow: hidden; }
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    background: rgba(0, 0, 0, 0.92);
+    background: rgba(0, 0, 0, 0);
+    transition: background-color 320ms ease;
     touch-action: none;
 }
+
+.lightbox.visivel { background: rgba(0, 0, 0, 0.92); }
 
 .lightbox[hidden] { display: none; }
 
@@ -194,7 +199,7 @@ body.lightbox-open { overflow: hidden; }
     user-select: none;
     -webkit-user-select: none;
     -webkit-user-drag: none;
-    will-change: transform;
+    will-change: transform, clip-path;
 }
 
 .lightbox-close {
@@ -211,15 +216,13 @@ body.lightbox-open { overflow: hidden; }
     font-size: 28px;
     line-height: 1;
     cursor: pointer;
+    opacity: 0;
+    transition: opacity 320ms ease;
 }
 
+.lightbox.visivel .lightbox-close { opacity: 1; }
+
 .gallery-hero {
-    position: relative;
-    min-height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
     background-image: url("https://raw.githubusercontent.com/eupyetro0224234/sitioebdamador1/refs/heads/main/images/0.jpg");
     background-position: center;
     background-size: cover;
@@ -229,11 +232,21 @@ body.lightbox-open { overflow: hidden; }
 
 .gallery { display: flex; flex-direction: column; gap: 20px; }
 .gallery img { display: block; width: 100%; height: auto; border-radius: 16px; }
+.gallery video {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+    background: #000;
+    pointer-events: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+}
 
 @media (max-width: 600px) {
-    .hero { min-height: 400px; }
+    .hero, .gallery-hero { height: 250px; }
     .hero h1, .gallery-hero h2 { font-size: 2.2rem; }
-    .gallery-hero { min-height: 250px; }
     .navbar { gap: 30px; }
     .info-cards { grid-template-columns: 1fr; }
 }
@@ -248,6 +261,11 @@ body.lightbox-open { overflow: hidden; }
     .gallery img {
         aspect-ratio: 4 / 3;
         object-fit: cover;
+    }
+
+    .gallery video {
+        aspect-ratio: 4 / 3;
+        object-fit: contain;
     }
 
     .gallery img:last-child:nth-child(odd) {

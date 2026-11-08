@@ -196,21 +196,148 @@ function zoomEm(novaEscala, px, py, destinoX, destinoY) {
     if (escala === 1) { posX = 0; posY = 0; }
 }
 
+const DURACAO_ANIM = 320;
+const CURVA_ANIM = "cubic-bezier(0.22, 0.8, 0.24, 1)";
+const reduzMovimento = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+let origemImg = null;
+let historicoAberto = false;
+let fechando = false;
+let timerAnim = null;
+
+function estadoDaMiniatura(img) {
+    const o = img.getBoundingClientRect();
+    const w = lightboxImg.offsetWidth;
+    const h = lightboxImg.offsetHeight;
+    const esquerda = (lightbox.clientWidth - w) / 2;
+    const topo = (lightbox.clientHeight - h) / 2;
+    const nw = img.naturalWidth || o.width;
+    const nh = img.naturalHeight || o.height;
+
+    const k = Math.max(o.width, o.height * nw / nh) / w;
+    const dx = (o.left + o.width / 2) - (esquerda + w / 2);
+    const dy = (o.top + o.height / 2) - (topo + h / 2);
+    const ix = Math.max(0, (w - o.width / k) / 2);
+    const iy = Math.max(0, (h - o.height / k) / 2);
+
+    return {
+        transform: "translate(" + dx + "px, " + dy + "px) scale(" + k + ")",
+        recorte: "inset(" + iy + "px " + ix + "px " + iy + "px " + ix + "px round " + (16 / k) + "px)"
+    };
+}
+
+function transicaoAbrirFechar() {
+    return "transform " + DURACAO_ANIM + "ms " + CURVA_ANIM +
+        ", clip-path " + DURACAO_ANIM + "ms " + CURVA_ANIM;
+}
+
 function abrirFoto(img) {
+    if (!lightbox.hidden) return;
+    clearTimeout(timerAnim);
+    origemImg = img;
+    fechando = false;
+    escala = 1; posX = 0; posY = 0;
+
+    lightboxImg.style.transition = "none";
+    lightboxImg.style.transform = "none";
+    lightboxImg.style.clipPath = "none";
+    lightboxImg.style.opacity = "0";
     lightboxImg.src = img.currentSrc || img.src;
     lightboxImg.alt = img.alt || "";
-    escala = 1; posX = 0; posY = 0;
-    aplicar(false);
+
+    lightbox.classList.remove("visivel");
     lightbox.hidden = false;
     document.body.classList.add("lightbox-open");
+
+    history.pushState({ lightbox: true }, "");
+    historicoAberto = true;
+
+    const iniciar = () => {
+        if (lightbox.hidden || fechando) return;
+
+        if (reduzMovimento.matches) {
+            lightboxImg.style.opacity = "1";
+            lightbox.classList.add("visivel");
+            aplicar(false);
+            return;
+        }
+
+        const inicio = estadoDaMiniatura(img);
+        lightboxImg.style.transform = inicio.transform;
+        lightboxImg.style.clipPath = inicio.recorte;
+        lightboxImg.style.opacity = "1";
+        img.style.visibility = "hidden";
+        void lightboxImg.offsetWidth;
+
+        lightboxImg.style.transition = transicaoAbrirFechar();
+        lightbox.classList.add("visivel");
+        lightboxImg.style.transform = "translate(0px, 0px) scale(1)";
+        lightboxImg.style.clipPath = "inset(0px 0px 0px 0px round 0px)";
+
+        timerAnim = setTimeout(() => {
+            lightboxImg.style.clipPath = "none";
+            aplicar(false);
+        }, DURACAO_ANIM + 30);
+    };
+
+    lightboxImg.decode().then(iniciar, iniciar);
+}
+
+function fecharComAnimacao() {
+    if (lightbox.hidden || fechando) return;
+    fechando = true;
+    historicoAberto = false;
+    toques.clear();
+    base = null;
+    clearTimeout(timerAnim);
+
+    const img = origemImg;
+
+    const terminar = () => {
+        lightbox.hidden = true;
+        lightbox.classList.remove("visivel");
+        document.body.classList.remove("lightbox-open");
+        lightboxImg.removeAttribute("src");
+        lightboxImg.style.opacity = "";
+        lightboxImg.style.clipPath = "none";
+        if (img) img.style.visibility = "";
+        fechando = false;
+    };
+
+    if (reduzMovimento.matches || !img) {
+        terminar();
+        return;
+    }
+
+    const fim = estadoDaMiniatura(img);
+    lightboxImg.style.transition = "none";
+    lightboxImg.style.clipPath = "inset(0px 0px 0px 0px round 0px)";
+    void lightboxImg.offsetWidth;
+
+    lightboxImg.style.transition = transicaoAbrirFechar();
+    lightbox.classList.remove("visivel");
+    lightboxImg.style.transform = fim.transform;
+    lightboxImg.style.clipPath = fim.recorte;
+
+    timerAnim = setTimeout(terminar, DURACAO_ANIM + 30);
 }
 
 function fecharFoto() {
-    lightbox.hidden = true;
-    document.body.classList.remove("lightbox-open");
-    lightboxImg.removeAttribute("src");
-    toques.clear();
+    if (lightbox.hidden || fechando) return;
+    if (historicoAberto) {
+        history.back();
+        setTimeout(() => {
+            if (!lightbox.hidden && !fechando) fecharComAnimacao();
+        }, 600);
+        return;
+    }
+    fecharComAnimacao();
 }
+
+window.addEventListener("popstate", () => {
+    if (!lightbox.hidden) fecharComAnimacao();
+    else historicoAberto = false;
+});
 
 function distancia(a, b) { return Math.hypot(a.x - b.x, a.y - b.y); }
 function meio(a, b) { return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }; }
@@ -388,3 +515,52 @@ async function copiarPix() {
 }
 
 botaoPix.addEventListener("click", copiarPix);
+
+const videosGaleria = Array.from(document.querySelectorAll(".gallery-video"));
+
+function tocarVideo(video) {
+    if (document.hidden || !video.paused) return;
+    const tentativa = video.play();
+    if (tentativa && tentativa.catch) tentativa.catch(() => {});
+}
+
+function tocarTodosVideos() {
+    videosGaleria.forEach(tocarVideo);
+}
+
+const observadorVideos = "IntersectionObserver" in window
+    ? new IntersectionObserver(entradas => {
+        entradas.forEach(entrada => {
+            if (entrada.isIntersecting) tocarVideo(entrada.target);
+        });
+    }, { threshold: 0.1 })
+    : null;
+
+videosGaleria.forEach(video => {
+    video.muted = true;
+    video.defaultMuted = true;
+    video.loop = true;
+    video.controls = false;
+    video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "");
+
+    video.addEventListener("pause", () => {
+        if (!video.ended) tocarVideo(video);
+    });
+    ["loadeddata", "canplay", "stalled", "suspend", "waiting"].forEach(nome =>
+        video.addEventListener(nome, () => tocarVideo(video)));
+    video.addEventListener("ended", () => {
+        video.currentTime = 0;
+        tocarVideo(video);
+    });
+    video.addEventListener("contextmenu", e => e.preventDefault());
+
+    if (observadorVideos) observadorVideos.observe(video);
+    tocarVideo(video);
+});
+
+document.addEventListener("visibilitychange", tocarTodosVideos);
+window.addEventListener("pageshow", tocarTodosVideos);
+window.addEventListener("load", tocarTodosVideos);
+["pointerup", "touchend", "click", "scroll"].forEach(nome =>
+    document.addEventListener(nome, tocarTodosVideos, { passive: true, capture: true }));
