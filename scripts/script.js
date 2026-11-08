@@ -140,9 +140,16 @@ window.addEventListener("load", atualizarNavegacao);
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(atualizarNavegacao);
 
 links.forEach(link => {
-    link.addEventListener("click", () => {
-        links.forEach(item => item.classList.remove("active"));
-        link.classList.add("active");
+    link.addEventListener("click", e => {
+        e.preventDefault();
+        const secao = document.getElementById(link.dataset.section);
+        if (!secao) return;
+
+        let destino = 0;
+        if (secao !== secoes[0]) {
+            destino = secao.getBoundingClientRect().top + window.scrollY - navbar.offsetHeight;
+        }
+        window.scrollTo({ top: Math.max(0, destino), behavior: "smooth" });
     });
 });
 
