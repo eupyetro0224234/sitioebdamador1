@@ -1,22 +1,80 @@
 const MUSICA_URL = "https://raw.githubusercontent.com/eupyetro0224234/sitioebdamador1/refs/heads/main/images/11.mp3";
 
 if (MUSICA_URL) {
+    const VOLUME_FINAL = 0.4;
+    const DURACAO_FADE = 4000;
+
     const audio = new Audio(MUSICA_URL);
-    audio.loop = true;
-    audio.volume = 0.4;
+    audio.loop = false;
     audio.preload = "none";
+    audio.volume = 0;
 
     const eventosPrimeiroToque = ["pointerup", "click", "touchend", "keydown"];
+    let iniciou = false;
+    let tentando = false;
+    let timerFade = null;
 
-    function tentarTocar() {
-        audio.play().then(() => {
+    function pararFade() {
+        clearInterval(timerFade);
+        timerFade = null;
+    }
+
+    function subirVolume() {
+        pararFade();
+        const inicio = Date.now();
+        timerFade = setInterval(() => {
+            const progresso = Math.min(1, (Date.now() - inicio) / DURACAO_FADE);
+            audio.volume = VOLUME_FINAL * progresso;
+            if (progresso >= 1) pararFade();
+        }, 100);
+    }
+
+    function tocar() {
+        audio.volume = 0;
+        return audio.play().then(subirVolume);
+    }
+
+    function pausar() {
+        pararFade();
+        audio.pause();
+    }
+
+    function primeiroToque() {
+        if (iniciou || tentando) return;
+        tentando = true;
+        tocar().then(() => {
+            iniciou = true;
             eventosPrimeiroToque.forEach(nome =>
-                document.removeEventListener(nome, tentarTocar, true));
-        }).catch(() => {});
+                document.removeEventListener(nome, primeiroToque, true));
+        }).catch(() => {}).finally(() => {
+            tentando = false;
+        });
     }
 
     eventosPrimeiroToque.forEach(nome =>
-        document.addEventListener(nome, tentarTocar, true));
+        document.addEventListener(nome, primeiroToque, true));
+
+    audio.addEventListener("ended", () => {
+        audio.currentTime = 0;
+        tocar().catch(() => {});
+    });
+
+    document.addEventListener("visibilitychange", () => {
+        if (!iniciou) return;
+        if (document.hidden) {
+            pausar();
+        } else {
+            tocar().catch(() => {});
+        }
+    });
+
+    window.addEventListener("pagehide", () => {
+        if (iniciou) pausar();
+    });
+
+    window.addEventListener("pageshow", e => {
+        if (e.persisted && iniciou && !document.hidden) tocar().catch(() => {});
+    });
 }
 
 const links = document.querySelectorAll(".navbar a");
