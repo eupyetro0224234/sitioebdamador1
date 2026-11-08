@@ -8,11 +8,43 @@
     <title>Informações</title>
 
     <link rel="stylesheet" href="styles/style.css?v=3">
+
+    <style>
+        .pix-toast {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            z-index: 200;
+            transform: translate(-50%, -120%);
+            opacity: 0;
+            padding: 13px 22px;
+            border-radius: 0 0 12px 12px;
+            background: #192332;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22);
+            pointer-events: none;
+            transition: transform 0.35s ease, opacity 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .pix-toast.visivel {
+            transform: translate(-50%, 0);
+            opacity: 1;
+        }
+
+        .pix-toast.erro {
+            background: #b3261e;
+        }
+    </style>
+
 </head>
 <body>
 
     <nav class="navbar">
         <a href="#informacoes" class="active" data-section="informacoes">Informações</a>
+        <a href="#pagamento" data-section="pagamento">Pagamento</a>
         <a href="#galeria" data-section="galeria">Fotos</a>
     </nav>
 
@@ -67,25 +99,46 @@
 
                 <article class="info-card address-card">
                     <h3>Rancho Colopietra</h3>
-                    <p class="address">Rua Paulo Sabatine, 1150 – Bairro Goianã<br>São Roque – SP</p>
+                    <p class="address">Rua Paulo Sabatine, 1150<br>Bairro Goianã<br>São Roque – SP</p>
                     <iframe class="map-frame" title="Mapa do Rancho Colopietra" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Rua+Paulo+Sabatine,+1150,+Goian%C3%A3,+S%C3%A3o+Roque,+SP&output=embed"></iframe>
                 </article>
 
             </div>
 
-            <h2 class="section-gap">Falar com</h2>
 
-            <div class="info-cards">
+        </section>
 
-                <article class="info-card contact-card">
+        <section id="pagamento">
+
+            <header class="gallery-hero pay-hero">
+                <div class="gallery-hero-content">
+                    <h2>Pagamento</h2>
+                </div>
+            </header>
+
+            <div class="container">
+
+                <article class="info-card pay-card">
+                    <p class="pay-text">Aponte a câmera do celular e faça o pagamento</p>
+                    <img class="pay-qr" src="data:image/png;base64,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" alt="QR Code Pix para pagamento do evento">
+
+                    <button class="pix-key" id="pix-key" type="button" data-key="leylianenascvalentim@gmail.com" aria-label="Copiar chave Pix">
+                        <span class="pix-value" id="pix-value">leylianenascvalentim@gmail.com</span>
+                    </button>
+                    <p class="pix-fail" id="pix-fail" hidden>Não deu para copiar sozinho. Segure o dedo sobre a chave e toque em Copiar.</p>
+                </article>
+
+                <div class="pay-contacts">
+                    <h2 class="pay-contacts-title">Enviar comprovante e nome para</h2>
+                    <article class="info-card contact-card">
                     <h3>Roberto</h3>
                     <a class="whatsapp-btn" href="https://wa.me/5511998690749" target="_blank" rel="noopener">Chamar no WhatsApp</a>
                 </article>
-
-                <article class="info-card contact-card">
+                    <article class="info-card contact-card">
                     <h3>Luciana</h3>
                     <a class="whatsapp-btn" href="https://wa.me/5511981991185" target="_blank" rel="noopener">Chamar no WhatsApp</a>
                 </article>
+                </div>
 
             </div>
 
@@ -131,22 +184,92 @@
 
     </main>
 
+    <div class="lightbox" id="lightbox" hidden>
+        <button class="lightbox-close" id="lightbox-close" type="button" aria-label="Fechar">&times;</button>
+        <img id="lightbox-img" alt="" draggable="false">
+    </div>
+
     <script>
+// ===== MÚSICA DE FUNDO =====
+// Cole abaixo o link do MP3 entre as aspas, por exemplo:
+// const MUSICA_URL = "https://raw.githubusercontent.com/eupyetro0224234/sitioebdamador1/refs/heads/main/images/musica.mp3";
+// Enquanto estiver vazio ("") não toca nada e o botão de som não aparece.
+const MUSICA_URL = "https://raw.githubusercontent.com/eupyetro0224234/sitioebdamador1/refs/heads/main/images/11.mp3";
+
+if (MUSICA_URL) {
+    const audio = new Audio(MUSICA_URL);
+    audio.loop = true;
+    audio.volume = 0.4;
+    audio.preload = "auto";
+
+    const iconeLigado =
+        '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+    const iconeMudo =
+        '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m16 9 5 6"/><path d="m21 9-5 6"/></svg>';
+
+    const botaoSom = document.createElement("button");
+    botaoSom.type = "button";
+    botaoSom.className = "music-btn";
+    botaoSom.setAttribute("aria-label", "Ligar ou desligar a música");
+    botaoSom.innerHTML = iconeMudo;
+    document.body.appendChild(botaoSom);
+
+    let pausadoPeloUsuario = false;
+    const eventosPrimeiroToque = ["pointerup", "click", "touchend", "keydown"];
+
+    function atualizarIcone() {
+        botaoSom.innerHTML = audio.paused ? iconeMudo : iconeLigado;
+    }
+
+    function tentarTocar() {
+        if (pausadoPeloUsuario) return;
+        audio.play().then(() => {
+            eventosPrimeiroToque.forEach(nome =>
+                document.removeEventListener(nome, tentarTocar, true));
+            atualizarIcone();
+        }).catch(() => {});
+    }
+
+    // começa a tocar no primeiro toque/clique em qualquer lugar do site
+    eventosPrimeiroToque.forEach(nome =>
+        document.addEventListener(nome, tentarTocar, true));
+
+    botaoSom.addEventListener("click", e => {
+        e.stopPropagation();
+        if (audio.paused) {
+            pausadoPeloUsuario = false;
+            audio.play().then(atualizarIcone).catch(() => {});
+        } else {
+            pausadoPeloUsuario = true;
+            audio.pause();
+            atualizarIcone();
+        }
+    });
+
+    audio.addEventListener("play", atualizarIcone);
+    audio.addEventListener("pause", atualizarIcone);
+}
+
 const links = document.querySelectorAll(".navbar a");
 const navbar = document.querySelector(".navbar");
-const galeria = document.getElementById("galeria");
+const secoes = ["informacoes", "pagamento", "galeria"]
+    .map(id => document.getElementById(id));
 
 function atualizarNavegacao() {
     const alturaNavbar = navbar ? navbar.offsetHeight : 0;
     const linhaReferencia = alturaNavbar + window.innerHeight * 0.4;
-    const topoGaleria = galeria.getBoundingClientRect().top;
 
     const naBase =
         window.innerHeight + (window.scrollY || document.documentElement.scrollTop) >=
         document.documentElement.scrollHeight - 2;
 
-    const secaoAtual =
-        topoGaleria <= linhaReferencia || naBase ? "galeria" : "informacoes";
+    let secaoAtual = secoes[0].id;
+    secoes.forEach(secao => {
+        if (secao.getBoundingClientRect().top <= linhaReferencia) {
+            secaoAtual = secao.id;
+        }
+    });
+    if (naBase) secaoAtual = secoes[secoes.length - 1].id;
 
     links.forEach(link => {
         link.classList.toggle("active", link.dataset.section === secaoAtual);
@@ -167,7 +290,160 @@ links.forEach(link => {
 });
 
 atualizarNavegacao();
-    </script>
 
-</body>
-</html>
+// ===== Zoom das fotos =====
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightbox-img");
+const lightboxClose = document.getElementById("lightbox-close");
+
+let escala = 1, posX = 0, posY = 0;
+const toques = new Map();
+let base = null;
+let moveu = false, houvePinca = false, tempoToque = 0, ultimoToque = 0;
+
+function limitar() {
+    const cw = lightbox.clientWidth, ch = lightbox.clientHeight;
+    const w = lightboxImg.offsetWidth * escala;
+    const h = lightboxImg.offsetHeight * escala;
+    const maxX = Math.max(0, (w - cw) / 2);
+    const maxY = Math.max(0, (h - ch) / 2);
+    posX = Math.min(maxX, Math.max(-maxX, posX));
+    posY = Math.min(maxY, Math.max(-maxY, posY));
+}
+
+function aplicar(animar) {
+    limitar();
+    lightboxImg.style.transition = animar ? "transform 0.2s ease" : "none";
+    lightboxImg.style.transform =
+        "translate(" + posX + "px, " + posY + "px) scale(" + escala + ")";
+}
+
+function centro() {
+    return { x: lightbox.clientWidth / 2, y: lightbox.clientHeight / 2 };
+}
+
+// aplica um novo zoom mantendo o ponto (px, py) da tela no mesmo lugar da foto
+function zoomEm(novaEscala, px, py, destinoX, destinoY) {
+    const c = centro();
+    novaEscala = Math.min(5, Math.max(1, novaEscala));
+    const ptX = (px - c.x - posX) / escala;
+    const ptY = (py - c.y - posY) / escala;
+    escala = novaEscala;
+    posX = destinoX - c.x - ptX * escala;
+    posY = destinoY - c.y - ptY * escala;
+    if (escala === 1) { posX = 0; posY = 0; }
+}
+
+function abrirFoto(img) {
+    lightboxImg.src = img.currentSrc || img.src;
+    lightboxImg.alt = img.alt || "";
+    escala = 1; posX = 0; posY = 0;
+    aplicar(false);
+    lightbox.hidden = false;
+    document.body.classList.add("lightbox-open");
+}
+
+function fecharFoto() {
+    lightbox.hidden = true;
+    document.body.classList.remove("lightbox-open");
+    lightboxImg.removeAttribute("src");
+    toques.clear();
+}
+
+function distancia(a, b) { return Math.hypot(a.x - b.x, a.y - b.y); }
+function meio(a, b) { return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }; }
+
+function novaBase() {
+    const pts = Array.from(toques.values());
+    if (pts.length >= 2) {
+        const m = meio(pts[0], pts[1]);
+        base = { tipo: "pinca", dist: distancia(pts[0], pts[1]), escala, mx: m.x, my: m.y, px: posX, py: posY };
+    } else if (pts.length === 1) {
+        base = { tipo: "arrasta", x: pts[0].x, y: pts[0].y, px: posX, py: posY };
+    } else {
+        base = null;
+    }
+}
+
+document.querySelectorAll(".gallery img").forEach(img => {
+    img.addEventListener("click", () => abrirFoto(img));
+});
+
+lightboxClose.addEventListener("click", fecharFoto);
+document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && !lightbox.hidden) fecharFoto();
+});
+
+lightbox.addEventListener("pointerdown", e => {
+    if (e.target.closest(".lightbox-close")) return;
+    lightbox.setPointerCapture(e.pointerId);
+    toques.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (toques.size === 1) { moveu = false; houvePinca = false; tempoToque = Date.now(); }
+    if (toques.size >= 2) houvePinca = true;
+    novaBase();
+});
+
+lightbox.addEventListener("pointermove", e => {
+    if (!toques.has(e.pointerId) || !base) return;
+    toques.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    const pts = Array.from(toques.values());
+
+    if (base.tipo === "pinca" && pts.length >= 2) {
+        const m = meio(pts[0], pts[1]);
+        const nova = base.escala * (distancia(pts[0], pts[1]) / base.dist);
+        // volta ao estado do início do gesto para calcular o ponto focal
+        escala = base.escala; posX = base.px; posY = base.py;
+        zoomEm(nova, base.mx, base.my, m.x, m.y);
+        moveu = true;
+        aplicar(false);
+    } else if (base.tipo === "arrasta" && pts.length === 1) {
+        const dx = pts[0].x - base.x, dy = pts[0].y - base.y;
+        if (Math.hypot(dx, dy) > 8) moveu = true;
+        if (escala > 1) {
+            posX = base.px + dx;
+            posY = base.py + dy;
+            aplicar(false);
+        }
+    }
+});
+
+function soltou(e) {
+    if (!toques.has(e.pointerId)) return;
+    const eraUnico = toques.size === 1;
+    toques.delete(e.pointerId);
+
+    if (eraUnico && !moveu && !houvePinca && Date.now() - tempoToque < 300) {
+        if (e.target === lightbox) {
+            fecharFoto();
+            return;
+        }
+        if (e.target === lightboxImg) {
+            const agora = Date.now();
+            if (agora - ultimoToque < 300) {
+                // toque duplo: aproxima ou volta ao normal
+                if (escala > 1) { escala = 1; posX = 0; posY = 0; }
+                else zoomEm(2.5, e.clientX, e.clientY, e.clientX, e.clientY);
+                aplicar(true);
+                ultimoToque = 0;
+            } else {
+                ultimoToque = agora;
+            }
+        }
+    }
+
+    if (escala <= 1.02) { escala = 1; posX = 0; posY = 0; aplicar(true); }
+    novaBase();
+}
+lightbox.addEventListener("pointerup", soltou);
+lightbox.addEventListener("pointercancel", soltou);
+
+// computador: roda do mouse dá zoom
+lightbox.addEventListener("wheel", e => {
+    e.preventDefault();
+    zoomEm(escala * Math.exp(-e.deltaY * 0.002), e.clientX, e.clientY, e.clientX, e.clientY);
+    aplicar(false);
+}, { passive: false });
+
+// iOS: impede o zoom da página inteira enquanto a foto está aberta
+["gesturestart", "gesturechange"].forEach(nome => {
+    document.addEventListener(nome, e =>
