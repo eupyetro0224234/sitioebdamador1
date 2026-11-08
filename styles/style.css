@@ -238,6 +238,25 @@ body.lightbox-open { overflow: hidden; }
     .info-cards { grid-template-columns: 1fr; }
 }
 
+@media (min-width: 900px) {
+    .gallery {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+    .gallery img {
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+    }
+
+    .gallery img:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+        justify-self: center;
+        width: calc(50% - 10px);
+    }
+}
+
 .gallery-hero.pay-hero {
     background-image: url("https://raw.githubusercontent.com/eupyetro0224234/sitioebdamador1/refs/heads/main/images/4.jpg");
 }
