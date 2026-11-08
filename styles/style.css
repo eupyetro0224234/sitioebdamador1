@@ -302,6 +302,27 @@ body.lightbox-open { overflow: hidden; }
     white-space: nowrap;
 }
 
+@media (min-width: 900px) {
+    #pagamento .container {
+        display: grid;
+        grid-template-columns: minmax(0, 420px) minmax(0, 420px);
+        gap: 48px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #pagamento .pay-card {
+        width: 100%;
+        margin: 0;
+    }
+
+    #pagamento .pay-contacts {
+        margin: 0;
+        padding-top: 0;
+        border-top: 0;
+    }
+}
+
 .music-btn {
     position: fixed;
     right: 16px;
