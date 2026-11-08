@@ -336,3 +336,64 @@ img:focus:not(:focus-visible) { outline: none; }
 
 .pix-key .pix-value { -webkit-user-select: text; user-select: text; }
 .pix-fail { margin: 10px 0 0; font-size: 0.85rem; color: #b3261e; }
+
+/* ===== Tema escuro: segue o tema do celular/computador ===== */
+:root {
+    color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background: #0f1722;
+        color: #e6ebf3;
+    }
+
+    .navbar {
+        background: #0b111a;
+    }
+
+    .info-card {
+        background: #1a2434;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
+    }
+
+    .info-card .price {
+        color: #cfe0f7;
+    }
+
+    .info-card span,
+    .pay-text {
+        color: #9aa8bd;
+    }
+
+    .section .section-gap,
+    .pay-contacts {
+        border-top-color: rgba(255, 255, 255, 0.14);
+    }
+
+    /* o QR Code precisa de fundo branco para o banco conseguir ler */
+    .pay-qr {
+        background: #fff;
+        padding: 10px;
+    }
+
+    .pix-key {
+        background: #0f1722;
+        border-color: #8fb3e8;
+        color: #cfe0f7;
+    }
+
+    .pix-key.copied {
+        background: #12301f;
+        border-color: #25d366;
+        color: #5fd68a;
+    }
+
+    .pix-fail {
+        color: #ff8a80;
+    }
+
+    .address-card .map-frame {
+        color-scheme: light;
+    }
+}

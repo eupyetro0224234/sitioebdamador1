@@ -3,10 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#192332">
+    <meta name="theme-color" content="#192332" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0b111a" media="(prefers-color-scheme: dark)">
     <title>Informações</title>
 
-    <link rel="stylesheet" href="styles/style.css?v=4">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+    <!-- CSS com número novo a cada abertura: o navegador nunca usa a cópia antiga -->
+    <script>
+        document.write('<link rel="stylesheet" href="styles/style.css?t=' + Date.now() + '">');
+    </script>
+    <noscript><link rel="stylesheet" href="styles/style.css"></noscript>
 
     <style>
         .pix-toast {
@@ -188,7 +197,10 @@
         <img id="lightbox-img" alt="" draggable="false">
     </div>
 
-    <script src="script.js?v=5"></script>
+    <!-- JS com número novo a cada abertura -->
+    <script>
+        document.write('<scr' + 'ipt src="script.js?t=' + Date.now() + '"></scr' + 'ipt>');
+    </script>
 
 </body>
 </html>
