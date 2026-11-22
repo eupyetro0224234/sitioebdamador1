@@ -564,3 +564,55 @@ window.addEventListener("pageshow", tocarTodosVideos);
 window.addEventListener("load", tocarTodosVideos);
 ["pointerup", "touchend", "click", "scroll"].forEach(nome =>
     document.addEventListener(nome, tocarTodosVideos, { passive: true, capture: true }));
+
+
+// Contagem regressiva — arquivo separado do script.js
+(function () {
+    const card = document.getElementById("contagem");
+    if (!card) return;
+
+    const inicio = new Date(card.dataset.inicio).getTime();
+    const fim = new Date(card.dataset.fim).getTime();
+
+    const titulo = document.getElementById("contagem-titulo");
+    const elDias = document.getElementById("contagem-dias");
+    const elHoras = document.getElementById("contagem-horas");
+    const elMin = document.getElementById("contagem-min");
+    const elSeg = document.getElementById("contagem-seg");
+
+    const dois = n => String(n).padStart(2, "0");
+
+    function atualizar() {
+        const agora = Date.now();
+
+        if (agora >= fim) {
+            card.classList.add("mensagem");
+            titulo.textContent = "O evento já passou";
+            return false;
+        }
+
+        if (agora >= inicio) {
+            card.classList.add("mensagem");
+            titulo.textContent = "É hoje! Está acontecendo agora";
+            return true;
+        }
+
+        const resta = inicio - agora;
+        const dias = Math.floor(resta / 86400000);
+        const horas = Math.floor(resta / 3600000) % 24;
+        const min = Math.floor(resta / 60000) % 60;
+        const seg = Math.floor(resta / 1000) % 60;
+
+        titulo.textContent = dias === 1 ? "Falta" : "Faltam";
+        elDias.textContent = dias;
+        elHoras.textContent = dois(horas);
+        elMin.textContent = dois(min);
+        elSeg.textContent = dois(seg);
+        return true;
+    }
+
+    if (!atualizar()) return;
+    const timer = setInterval(() => {
+        if (!atualizar()) clearInterval(timer);
+    }, 1000);
+})();

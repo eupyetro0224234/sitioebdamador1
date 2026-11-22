@@ -454,3 +454,66 @@ img:focus:not(:focus-visible) { outline: none; }
         color-scheme: light;
     }
 }
+
+/* Contagem regressiva — arquivo separado do style.css */
+
+.contagem-wrap { margin-top: 16px; }
+
+.contagem-card { text-align: center; }
+
+.contagem-titulo {
+    margin: 0 0 14px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #687386;
+}
+
+.contagem-tempo {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.contagem-un {
+    flex: 1 1 0;
+    max-width: 90px;
+    padding: 12px 4px;
+    border-radius: 12px;
+    background: #f5f6fa;
+}
+
+.contagem-un strong {
+    display: block;
+    font-size: 1.8rem;
+    line-height: 1.1;
+    color: #192f4b;
+    font-variant-numeric: tabular-nums;
+}
+
+.contagem-un span {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.8rem;
+    color: #687386;
+}
+
+.contagem-card.mensagem .contagem-tempo { display: none; }
+.contagem-card.mensagem .contagem-titulo {
+    margin: 0;
+    font-size: 1.4rem;
+    color: #192f4b;
+}
+
+@media (max-width: 600px) {
+    .contagem-un strong { font-size: 1.5rem; }
+}
+
+@media (prefers-color-scheme: dark) {
+    .contagem-titulo,
+    .contagem-un span { color: #9aa8bd; }
+
+    .contagem-un { background: #0f1722; }
+
+    .contagem-un strong,
+    .contagem-card.mensagem .contagem-titulo { color: #cfe0f7; }
+}
